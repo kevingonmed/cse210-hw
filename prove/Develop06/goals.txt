@@ -1,1 +1,4 @@
-Total Points: 0
+Correr|2|SimpleGoal|
+leer el libro de mormon|103|EternalGoal|
+Programar|54|ChecklistGoal|20
+Total Points: 157

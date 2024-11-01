@@ -4,24 +4,32 @@ namespace EternalQuest
 {
     public abstract class Goal
     {
-        protected string Name;
+        public string Name { get; private set; }
         protected int Points;
-        protected bool IsCompleted;
+        protected int completionCount;
+        protected int streak;
+        protected DateTime lastCompletionDate;
 
         public Goal(string name, int points)
         {
             Name = name;
             Points = points;
-            IsCompleted = false;
+            completionCount = 0;
+            streak = 0;
+            lastCompletionDate = DateTime.MinValue;
         }
 
         public abstract void RecordEvent();
-        public abstract string GetStatus();
         public abstract string GetInfo();
 
         public int GetPoints()
         {
-            return Points;
+            return Points * completionCount;
+        }
+
+        public int GetStreak()
+        {
+            return streak;
         }
     }
 }

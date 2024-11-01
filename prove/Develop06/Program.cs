@@ -115,7 +115,7 @@ namespace EternalQuest
             {
                 foreach (var goal in goals)
                 {
-                    writer.WriteLine(goal.GetInfo());
+                    writer.WriteLine($"{goal.Name}|{goal.GetPoints()}|{goal.GetType().Name}|{(goal is ChecklistGoal checklistGoal ? checklistGoal.RequiredTimes.ToString() : "")}");
                 }
                 writer.WriteLine($"Total Points: {totalPoints}");
             }
@@ -129,9 +129,33 @@ namespace EternalQuest
                 string[] lines = File.ReadAllLines("goals.txt");
                 foreach (var line in lines)
                 {
-                    Console.WriteLine(line); // Display loaded goals
-                    // You can implement loading logic here if needed
+                    var parts = line.Split('|');
+                    if (parts.Length > 2)
+                    {
+                        string name = parts[0];
+                        int points = int.Parse(parts[1]);
+                        string type = parts[2];
+
+                        switch (type)
+                        {
+                            case "SimpleGoal":
+                                goals.Add(new SimpleGoal(name, points));
+                                break;
+                            case "EternalGoal":
+                                goals.Add(new EternalGoal(name, points));
+                                break;
+                            case "ChecklistGoal":
+                                int requiredTimes = int.Parse(parts[3]);
+                                goals.Add(new ChecklistGoal(name, points, requiredTimes));
+                                break;
+                        }
+                    }
                 }
+                Console.WriteLine("Goals loaded successfully!");
+            }
+            else
+            {
+                Console.WriteLine("No saved goals found.");
             }
         }
     }

@@ -1,3 +1,5 @@
+using System;
+
 namespace EternalQuest
 {
     public class EternalGoal : Goal
@@ -6,17 +8,26 @@ namespace EternalQuest
 
         public override void RecordEvent()
         {
-            Points += 100; // Increment points each time
+            completionCount++;
+            UpdateStreak();
         }
 
-        public override string GetStatus()
+        private void UpdateStreak()
         {
-            return "[ ]"; // Always incomplete
+            if (lastCompletionDate.Date == DateTime.Today.AddDays(-1).Date)
+            {
+                streak++;
+            }
+            else if (lastCompletionDate.Date < DateTime.Today)
+            {
+                streak = 1;
+            }
+            lastCompletionDate = DateTime.Today;
         }
 
         public override string GetInfo()
         {
-            return $"{Name} - {GetStatus()} - {Points} points (Eternal)";
+            return $"{Name} (Eternal Goal) - Completed: {completionCount} times - Streak: {GetStreak()} - {GetPoints()} points";
         }
     }
 }
